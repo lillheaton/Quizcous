@@ -48,21 +48,35 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-                MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+    protected void onResume() {
+        super.onResume();
+        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         if (isFinishing()) {
             mMediaRouter.removeCallback(mMediaRouterCallback);
         }
         super.onPause();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+    }
+
+    @Override
+    protected void onStop() {
+        mMediaRouter.removeCallback(mMediaRouterCallback);
+        super.onStop();
+    }
+
+
+
+
 
     private void initMediaRouter() {
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
