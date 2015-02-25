@@ -1,5 +1,6 @@
 package com.emilochhektor.quizcous;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +10,8 @@ import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
@@ -21,7 +24,7 @@ import com.google.android.gms.common.api.Status;
 //import android.support.v7.media.MediaRouter;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener{
 
     private static String TAG = "com.emilochhektor.quizcous.MainActivity";
     private static String APP_ID = "B7BD0161";
@@ -42,8 +45,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initMediaRouter();
+
+        Button btn = (Button)findViewById(R.id.btn_start);
+        btn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 
 
@@ -129,9 +140,6 @@ public class MainActivity extends ActionBarActivity {
             Log.d(TAG, "Lol exception: " + e.toString());
         }
     }
-
-
-
 
     public class MyMediaRouterCallback extends MediaRouter.Callback {
 
