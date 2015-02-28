@@ -13,15 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.emilochhektor.quizcous.cast.QuizcousConnectionCallbacks;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
-//import android.support.v7.media.MediaRouteSelector;
-//import android.support.v7.media.MediaRouter;
+
+import com.emilochhektor.quizcous.cast.QuizcousCastListener;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener{
@@ -35,10 +34,55 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private MyMediaRouterCallback mMediaRouterCallback;
 
     private CastDevice mCastDevice;
-    private Cast.Listener mCastListener;
+    private QuizcousCastListener mCastListener;
     private GoogleApiClient mApiClient;
 
-    private ConnectionCallbacks mConnectionCallbacks;
+    private QuizcousConnectionCallbacks mConnectionCallbacks;
+
+
+
+
+
+    private void initMediaRouter() {
+        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        mMediaRouteSelector = new MediaRouteSelector.Builder()
+                .addControlCategory(CastMediaControlIntent.categoryForCast(APP_ID))
+                .build();
+
+        mMediaRouterCallback = new MyMediaRouterCallback();
+    }
+
+
+    private void launchReceiver() {
+        try {
+            mCastListener = new QuizcousCastListener();
+            mConnectionCallbacks = new QuizcousConnectionCallbacks(APP_ID);
+
+            Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions.builder(mCastDevice, mCastListener);
+
+            mApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(Cast.API, apiOptionsBuilder.build())
+                    .addConnectionCallbacks(mConnectionCallbacks)
+                    .build();
+
+            mConnectionCallbacks.setApiClient(mApiClient);
+
+            mApiClient.connect();
+
+        } catch (Exception e) {
+            Log.d(TAG, "Lol exception: " + e.toString());
+        }
+    }
+
+
+    private void startGameActivity() {
+        Intent intent = new Intent(this, GameActivity.class);
+
+        intent.putExtra("CastDevice", mCastDevice);
+
+        startActivity(intent);
+    }
+
 
 
     @Override
@@ -49,15 +93,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         Button btn = (Button)findViewById(R.id.btn_start);
         btn.setOnClickListener(this);
+        btn.setVisibility(View.GONE); // Hide button until we're connected to chromecast
     }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
-    }
-
-
 
     @Override
     protected void onResume() {
@@ -86,22 +123,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-
-
-
-    private void initMediaRouter() {
-        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-        mMediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast(APP_ID))
-                .build();
-
-        mMediaRouterCallback = new MyMediaRouterCallback();
-    }
-
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -119,70 +140,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
 
-    private void launchReceiver() {
-        try {
-            mCastListener = new Cast.Listener() {
-
-            };
-
-
-            mConnectionCallbacks = new ConnectionCallbacks();
-            Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions.builder(mCastDevice, mCastListener);
-
-            mApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Cast.API, apiOptionsBuilder.build())
-                    .addConnectionCallbacks(mConnectionCallbacks)
-                    .build();
-
-            mApiClient.connect();
-
-        } catch (Exception e) {
-            Log.d(TAG, "Lol exception: " + e.toString());
-        }
+    @Override
+    public void onClick(View v) {
+        this.startGameActivity();
     }
 
+
+
+
+
+    // Inner class not yet moved to separate file
     public class MyMediaRouterCallback extends MediaRouter.Callback {
 
         @Override
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+            Log.d("Chromecast selected", info.getName());
             mCastDevice = CastDevice.getFromBundle(info.getExtras());
             launchReceiver();
         }
 
         @Override
         public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+            Log.d(TAG, "Chromecast unselected");
             mCastDevice = null;
-        }
-    }
-
-
-
-    private class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
-        @Override
-        public void onConnected(Bundle connectionHint) {
-            try {
-                Cast.CastApi.launchApplication(mApiClient, APP_ID, false)
-                    .setResultCallback(
-                        new ResultCallback<Cast.ApplicationConnectionResult>() {
-                            @Override
-                            public void onResult(Cast.ApplicationConnectionResult applicationConnectionResult) {
-                                Status status = applicationConnectionResult.getStatus();
-                                if (status.isSuccess()) {
-
-                                } else {
-                                    Log.d(TAG, "No success on status, lol");
-                                }
-                            }
-                        }
-                    );
-            } catch (Exception e) {
-                Log.d(TAG, "Failed to launch application", e);
-            }
-        }
-
-        @Override
-        public void onConnectionSuspended(int cause) {
-            Log.d(TAG, "Connection suspended");
         }
     }
 }
