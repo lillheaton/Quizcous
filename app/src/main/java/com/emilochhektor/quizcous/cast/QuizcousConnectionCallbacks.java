@@ -14,22 +14,22 @@ import com.google.android.gms.common.api.Status;
 public class QuizcousConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
 
     private static String TAG = "com.emilochhektor.quizcous.cast.QuizcousConnectionCallbacks";
+    private GoogleApiClient apiClient;
+    private String appID;
+    private IChromecastUser chromecastUser;
 
-    private GoogleApiClient mApiClient;
-    private String mAppID;
-
-    public QuizcousConnectionCallbacks(String appID) {
-        mAppID = appID;
+    public QuizcousConnectionCallbacks(String appID, IChromecastUser chromecastUser) {
+        this.appID = appID;
+        this.chromecastUser = chromecastUser;
     }
 
     public void setApiClient(GoogleApiClient apiClient) {
-        mApiClient = apiClient;
+        this.apiClient = apiClient;
     }
-
 
     private void launchReceiverApplication() {
         try {
-            Cast.CastApi.launchApplication(mApiClient, mAppID, false)
+            Cast.CastApi.launchApplication(apiClient, appID, false)
                 .setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
                     @Override
                     public void onResult(Cast.ApplicationConnectionResult applicationConnectionResult) {
@@ -46,7 +46,6 @@ public class QuizcousConnectionCallbacks implements GoogleApiClient.ConnectionCa
             Log.d(TAG, "Failed to launch receiver application", e);
         }
     }
-
 
     @Override
     public void onConnected(Bundle connectionHint) {
