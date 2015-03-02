@@ -13,7 +13,7 @@ import com.google.android.gms.common.api.Status;
  */
 public class QuizcousChannel implements Cast.MessageReceivedCallback {
 
-    private final static String TAG = "com.emilochhektor.quizcous.cast.QuizcousChannel";
+    private static String TAG = "com.emilochhektor.quizcous.cast.QuizcousChannel";
     private final static String NAMESPACE = "urn:x-cast:com.emilochhektor.quizcous";
     private GoogleApiClient apiClient;
     private IChromecastUser chromecastUser;
