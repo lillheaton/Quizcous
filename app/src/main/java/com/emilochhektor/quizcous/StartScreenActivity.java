@@ -95,6 +95,7 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
 
         this.connectionHandler.setChromecastMenuItem(mediaRouteMenuItem);
+
         return true;
     }
 }

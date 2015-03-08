@@ -18,6 +18,8 @@ import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONObject;
+
 /**
  * Created by Hektor on 2015-03-07.
  */
@@ -35,6 +37,7 @@ public class ChromecastConnectionHandler {
 
     private QuizcousCastListener castListener;
     private QuizcousConnectionCallbacks connectionCallbacks;
+    private QuizcousMessageChannel messageChannel;
 
     private GoogleApiClient apiClient;
     private CastDevice castDevice;
@@ -56,6 +59,18 @@ public class ChromecastConnectionHandler {
         this.initMediaRouter();
     }
 
+    // ## Communication
+    public void sendMessage(String message) {
+        if (this.apiClient == null || this.messageChannel == null) {
+            return;
+        }
+
+        this.messageChannel.sendMessage(message);
+    }
+
+    // ## Getters
+    public GoogleApiClient getApiClient() { return this.apiClient; }
+
     // ## Media Routing
     public void startRoutePolling() {
         // Start discovery of cast devices
@@ -73,6 +88,8 @@ public class ChromecastConnectionHandler {
         MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat.getActionProvider(menuItem);
         mediaRouteActionProvider.setRouteSelector(mediaRouteSelector);
     }
+
+
 
 
     // # Private methods
@@ -116,7 +133,7 @@ public class ChromecastConnectionHandler {
     // ## Receiver application
     private void connectToReceiverApplication() {
         if (this.waitingToReconnect) {
-
+            this.connectMessageChannel();
         } else {
             // check for joining existing
             // else
@@ -131,6 +148,14 @@ public class ChromecastConnectionHandler {
         } catch (Exception e) {
             Log.d(TAG, "Failed to launch receiver application", e);
         }
+    }
+
+    private void connectMessageChannel() {
+        if (this.messageChannel == null) {
+            this.messageChannel = new QuizcousMessageChannel(this);
+        }
+
+        this.messageChannel.connect();
     }
 
 
@@ -208,10 +233,17 @@ public class ChromecastConnectionHandler {
                 ", wasLaunched: " + wasLaunched
             );
 
+            this.connectMessageChannel();
+
             this.chromecastUser.onReceiverApplicationConnected();
         } else {
             Log.d(TAG, "No success in applicationConnectionResult");
             this.teardownAll();
         }
+    }
+
+    // ## QuizcousChannel
+    public void onMessageReceived(JSONObject json) {
+
     }
 }
