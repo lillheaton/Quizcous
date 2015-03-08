@@ -1,5 +1,7 @@
 package com.emilochhektor.quizcous.cast;
 
+import android.content.Context;
+
 import com.google.android.gms.cast.CastDevice;
 
 /**
@@ -7,8 +9,14 @@ import com.google.android.gms.cast.CastDevice;
  */
 public interface IChromecastUser {
 
-    public void onChromecastSelected(CastDevice castDevice);
-    public void onChromecastUnselected();
+    public abstract Context getContext();
 
-    public void onChromecastConnected();
+    public abstract void onTeardown();
+
+    public abstract void onChromecastConnected();
+    public abstract void onChromecastDisconnected();
+
+    public abstract void onReceiverApplicationConnected();
+    public abstract void onReceiverApplicationDisconnected();
+
 }

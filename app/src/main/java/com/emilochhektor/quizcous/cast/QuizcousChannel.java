@@ -8,6 +8,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by emiols on 2015-03-02.
  */
@@ -34,7 +37,14 @@ public class QuizcousChannel implements Cast.MessageReceivedCallback {
     }
 
     @Override
-    public void onMessageReceived(CastDevice castDevice, String s, String s2) {
+    public void onMessageReceived(CastDevice castDevice, String namespace, String data) {
+        try {
+            JSONObject json = new JSONObject(data);
+
+            
+        } catch (JSONException ex) {
+
+        }
     }
 
 

@@ -1,7 +1,9 @@
 package com.emilochhektor.quizcous.cast;
 
-import android.support.v7.media.MediaRouter;
 import android.util.Log;
+
+import android.support.v7.media.MediaRouter;
+
 import com.google.android.gms.cast.CastDevice;
 
 /**
@@ -10,25 +12,25 @@ import com.google.android.gms.cast.CastDevice;
 public class QuizcousMediaRouterCallback extends MediaRouter.Callback {
 
     private static String TAG = "com.emilochhektor.quizcous.cast.QuizcousMediaRouterCallback";
-    private CastDevice castDevice;
-    private IChromecastUser routeListener;
+    private ChromecastConnectionHandler connectionHandler;
 
-    public QuizcousMediaRouterCallback(IChromecastUser routeListener){
-        this.routeListener = routeListener;
+    public QuizcousMediaRouterCallback(ChromecastConnectionHandler connectionHandler){
+        this.connectionHandler = connectionHandler;
     }
 
     @Override
     public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-        Log.d("Chromecast selected", info.getName());
-        castDevice = CastDevice.getFromBundle(info.getExtras());
-        this.routeListener.onChromecastSelected(castDevice);
+        Log.d(TAG, "onRouteSelected");
+
+        CastDevice castDevice = CastDevice.getFromBundle(info.getExtras());
+        this.connectionHandler.onChromecastSelected(castDevice);
     }
 
     @Override
     public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-        Log.d(TAG, "Chromecast unselected");
-        this.castDevice = null;
-        this.routeListener.onChromecastUnselected();
+        Log.d(TAG, "onRouteUnselected");
+
+        this.connectionHandler.onChromecastUnselected();
     }
 
     @Override

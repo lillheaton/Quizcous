@@ -1,5 +1,6 @@
 package com.emilochhektor.quizcous;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,15 +36,13 @@ public class LobbyActivity extends ActionBarActivity implements IChromecastUser 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onChromecastSelected(CastDevice castDevice) {
+    // @Implements
+    public Context getContext() {
+        return this.getApplicationContext();
     }
-
-    @Override
-    public void onChromecastUnselected() {
-    }
-
-    @Override
-    public void onChromecastConnected() {
-    }
+    public void onTeardown() { }
+    public void onChromecastConnected() { }
+    public void onChromecastDisconnected() { }
+    public void onReceiverApplicationConnected() { }
+    public void onReceiverApplicationDisconnected() { }
 }
