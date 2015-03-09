@@ -169,6 +169,11 @@ public class ChromecastConnectionHandler {
 
                 Cast.CastApi.stopApplication(this.apiClient, this.sessionID);
 
+                if (this.messageChannel != null) {
+                    this.messageChannel.disconnect();
+                    this.messageChannel = null;
+                }
+
                 this.apiClient.disconnect();
             }
 
@@ -244,6 +249,6 @@ public class ChromecastConnectionHandler {
 
     // ## QuizcousChannel
     public void onMessageReceived(JSONObject json) {
-
+        this.chromecastUser.onMessageReceived(json);
     }
 }

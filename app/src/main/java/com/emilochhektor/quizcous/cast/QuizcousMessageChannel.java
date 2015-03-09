@@ -39,9 +39,21 @@ public class QuizcousMessageChannel implements Cast.MessageReceivedCallback {
         }
     }
 
-    public void sendMessage(String message){
+    public void disconnect() {
         try {
-            Cast.CastApi.sendMessage(this.connectionHandler.getApiClient(), this.NAMESPACE, message)
+            Cast.CastApi.removeMessageReceivedCallbacks(this.connectionHandler.getApiClient(), this.NAMESPACE);
+        } catch (IOException ex) {
+            Log.d(TAG, "Exception while destroying message channel", ex);
+        }
+    }
+
+
+    public void sendMessage(JSONObject json) {
+        this.sendMessage(json.toString());
+    }
+    public void sendMessage(String jsonStr){
+        try {
+            Cast.CastApi.sendMessage(this.connectionHandler.getApiClient(), this.NAMESPACE, jsonStr)
                     .setResultCallback(new ChannelResultCallback());
         }
         catch (Exception e){

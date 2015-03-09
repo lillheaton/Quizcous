@@ -7,9 +7,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.emilochhektor.quizcous.cast.ChromecastConnectionHandler;
 import com.emilochhektor.quizcous.cast.IChromecastUser;
+
+import org.json.JSONObject;
 
 
 public class StartScreenActivity extends ActionBarActivity implements IChromecastUser {
@@ -44,8 +47,14 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     public void onChromecastDisconnected() { }
     public void onReceiverApplicationConnected() {
         Log.d(TAG, "Receiver application connected :D");
+
+        this.connectionHandler.sendMessage("{\"message\": \"Hello mr receiver!\"}");
     }
     public void onReceiverApplicationDisconnected() { }
+
+    public void onMessageReceived(JSONObject json) {
+        Toast.makeText(this, "Message received", Toast.LENGTH_SHORT).show();
+    }
 
 
     @Override

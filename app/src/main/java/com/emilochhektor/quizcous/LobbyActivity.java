@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import com.emilochhektor.quizcous.cast.IChromecastUser;
 import com.google.android.gms.cast.CastDevice;
 
+import org.json.JSONObject;
+
 
 public class LobbyActivity extends ActionBarActivity implements IChromecastUser {
 
@@ -45,4 +47,5 @@ public class LobbyActivity extends ActionBarActivity implements IChromecastUser 
     public void onChromecastDisconnected() { }
     public void onReceiverApplicationConnected() { }
     public void onReceiverApplicationDisconnected() { }
+    public void onMessageReceived(JSONObject json) { }
 }
