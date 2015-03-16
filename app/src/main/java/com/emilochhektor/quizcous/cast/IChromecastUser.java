@@ -11,7 +11,7 @@ import org.json.JSONObject;
  */
 public interface IChromecastUser {
 
-    public abstract Context getContext();
+    public abstract Context getApplicationContext();
 
     public abstract void onTeardown();
 

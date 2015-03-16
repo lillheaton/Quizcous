@@ -22,7 +22,7 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     private ChromecastConnectionHandler connectionHandler;
 
     private void init(){
-        connectionHandler = new ChromecastConnectionHandler(this);
+        connectionHandler = ChromecastConnectionHandler.getInstance(this);
         connectionHandler.init();
     }
 
@@ -37,7 +37,7 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
 
 
     // @Implements
-    public Context getContext() {
+    public Context getApplicationContext() {
         return this.getApplicationContext();
     }
     public void onTeardown() { }

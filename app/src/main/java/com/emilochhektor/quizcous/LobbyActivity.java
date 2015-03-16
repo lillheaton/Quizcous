@@ -39,7 +39,7 @@ public class LobbyActivity extends ActionBarActivity implements IChromecastUser 
     }
 
     // @Implements
-    public Context getContext() {
+    public Context getApplicationContext() {
         return this.getApplicationContext();
     }
     public void onTeardown() { }

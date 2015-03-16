@@ -27,6 +27,10 @@ public class ChromecastConnectionHandler {
 
     private static String TAG = "com.emilochhektor.quizcous.cast.ChromecastConnectionHandler";
 
+
+    private static ChromecastConnectionHandler _instance;
+    private static Context _context;
+
     private String appID;
     private IChromecastUser chromecastUser;
 
@@ -48,10 +52,46 @@ public class ChromecastConnectionHandler {
     private String sessionID = null;
 
 
-    public ChromecastConnectionHandler(IChromecastUser chromecastUser) {
-        this.chromecastUser = chromecastUser;
-        this.appID = chromecastUser.getContext().getString(R.string.app_id);
+    private ChromecastConnectionHandler() {
+        this.appID = chromecastUser.getApplicationContext().getString(R.string.app_id);
     }
+
+
+    // # Static methods
+    public static ChromecastConnectionHandler getInstance(IChromecastUser chromecastUser)
+    {
+        if (ChromecastConnectionHandler._instance == null) {
+            ChromecastConnectionHandler._instance = new ChromecastConnectionHandler();
+        }
+
+        ChromecastConnectionHandler.updateChromecastUser(chromecastUser);
+
+        return ChromecastConnectionHandler._instance;
+    }
+
+    private static void updateChromecastUser(IChromecastUser chromecastUser)
+    {
+        if (chromecastUser == ChromecastConnectionHandler._instance.chromecastUser)
+        {
+            return;
+        }
+
+        ChromecastConnectionHandler._instance.chromecastUser = chromecastUser;
+
+        ChromecastConnectionHandler.updateContext(chromecastUser.getApplicationContext());
+    }
+
+    private static void updateContext(Context context)
+    {
+        if (ChromecastConnectionHandler._context == context)
+        {
+            return;
+        }
+
+        ChromecastConnectionHandler._context = context;
+    }
+
+
 
 
     // # Public methods
@@ -75,9 +115,9 @@ public class ChromecastConnectionHandler {
     public void startRoutePolling() {
         // Start discovery of cast devices
         this.mediaRouter.addCallback(
-                this.mediaRouteSelector,
-                this.mediaRouterCallback,
-                MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY
+            this.mediaRouteSelector,
+            this.mediaRouterCallback,
+            MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY
         );
     }
     public void stopRoutePolling() {
@@ -95,7 +135,7 @@ public class ChromecastConnectionHandler {
     // # Private methods
     // ## Initialize
     private void initMediaRouter() {
-        Context context = chromecastUser.getContext();
+        Context context = chromecastUser.getApplicationContext();
 
         mediaRouter = MediaRouter.getInstance(context);
         mediaRouteSelector = new MediaRouteSelector.Builder()
@@ -114,7 +154,7 @@ public class ChromecastConnectionHandler {
 
             Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions.builder(castDevice, castListener);
 
-            apiClient = new GoogleApiClient.Builder(chromecastUser.getContext())
+            apiClient = new GoogleApiClient.Builder(chromecastUser.getApplicationContext())
                     .addApi(Cast.API, apiOptionsBuilder.build())
                     .addConnectionCallbacks(connectionCallbacks)
                     .addOnConnectionFailedListener(connectionCallbacks)
