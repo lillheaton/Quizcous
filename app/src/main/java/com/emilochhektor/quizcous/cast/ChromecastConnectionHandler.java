@@ -31,6 +31,8 @@ public class ChromecastConnectionHandler {
     private static ChromecastConnectionHandler _instance;
     private static Context _context;
 
+    private int appIdResource = R.string.app_id;
+//    private int appIdResource = R.string.app_id_local;
     private String appID;
     private IChromecastUser chromecastUser;
 
@@ -52,9 +54,7 @@ public class ChromecastConnectionHandler {
     private String sessionID = null;
 
 
-    private ChromecastConnectionHandler() {
-        this.appID = chromecastUser.getApplicationContext().getString(R.string.app_id);
-    }
+    private ChromecastConnectionHandler() { }
 
 
     // # Static methods
@@ -64,31 +64,18 @@ public class ChromecastConnectionHandler {
             ChromecastConnectionHandler._instance = new ChromecastConnectionHandler();
         }
 
-        ChromecastConnectionHandler.updateChromecastUser(chromecastUser);
+        ChromecastConnectionHandler._instance.updateChromecastUser(chromecastUser);
 
         return ChromecastConnectionHandler._instance;
     }
 
-    private static void updateChromecastUser(IChromecastUser chromecastUser)
+    private void updateChromecastUser(IChromecastUser chromecastUser)
     {
-        if (chromecastUser == ChromecastConnectionHandler._instance.chromecastUser)
-        {
+        if (chromecastUser == ChromecastConnectionHandler._instance.chromecastUser) {
             return;
         }
 
         ChromecastConnectionHandler._instance.chromecastUser = chromecastUser;
-
-        ChromecastConnectionHandler.updateContext(chromecastUser.getApplicationContext());
-    }
-
-    private static void updateContext(Context context)
-    {
-        if (ChromecastConnectionHandler._context == context)
-        {
-            return;
-        }
-
-        ChromecastConnectionHandler._context = context;
     }
 
 
@@ -133,13 +120,15 @@ public class ChromecastConnectionHandler {
 
 
     // # Private methods
+    private String getAppID() { return this.chromecastUser.getApplicationContext().getResources().getString(this.appIdResource); }
+
     // ## Initialize
     private void initMediaRouter() {
         Context context = chromecastUser.getApplicationContext();
 
         mediaRouter = MediaRouter.getInstance(context);
         mediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast(appID))
+                .addControlCategory(CastMediaControlIntent.categoryForCast(this.getAppID()))
                 .build();
 
         mediaRouterCallback = new QuizcousMediaRouterCallback(this);
@@ -183,7 +172,7 @@ public class ChromecastConnectionHandler {
 
     private void launchReceiverApplication() {
         try {
-            Cast.CastApi.launchApplication(apiClient, appID, false)
+            Cast.CastApi.launchApplication(apiClient, this.getAppID(), false)
                     .setResultCallback(connectionCallbacks);
         } catch (Exception e) {
             Log.d(TAG, "Failed to launch receiver application", e);
@@ -288,6 +277,9 @@ public class ChromecastConnectionHandler {
     }
 
     // ## QuizcousChannel
+    public void onMessageChannelConnected() {
+        this.chromecastUser.onMessageChannelConnected();
+    }
     public void onMessageReceived(JSONObject json) {
         this.chromecastUser.onMessageReceived(json);
     }

@@ -11,6 +11,7 @@ import org.json.JSONObject;
  */
 public interface IChromecastUser {
 
+    // Activities implementing this Interface doesn't need to implement this
     public abstract Context getApplicationContext();
 
     public abstract void onTeardown();
@@ -21,5 +22,6 @@ public interface IChromecastUser {
     public abstract void onReceiverApplicationConnected();
     public abstract void onReceiverApplicationDisconnected();
 
+    public abstract void onMessageChannelConnected();
     public abstract void onMessageReceived(JSONObject json);
 }

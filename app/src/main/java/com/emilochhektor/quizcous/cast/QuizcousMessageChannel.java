@@ -54,7 +54,7 @@ public class QuizcousMessageChannel implements Cast.MessageReceivedCallback {
     public void sendMessage(String jsonStr){
         try {
             Cast.CastApi.sendMessage(this.connectionHandler.getApiClient(), this.NAMESPACE, jsonStr)
-                    .setResultCallback(new ChannelResultCallback());
+                .setResultCallback(new ChannelResultCallback());
         }
         catch (Exception e){
             Log.e(TAG, e.getMessage());
@@ -76,7 +76,8 @@ public class QuizcousMessageChannel implements Cast.MessageReceivedCallback {
 
         @Override
         public void onResult(Status result) {
-            if (!result.isSuccess()) {
+            if (result.isSuccess()) {
+            } else {
                 Log.e(TAG, "Sending message failed");
             }
         }

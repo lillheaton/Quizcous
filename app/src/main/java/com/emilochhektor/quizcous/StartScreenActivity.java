@@ -21,9 +21,12 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
 
     private ChromecastConnectionHandler connectionHandler;
 
+    // Color theme
+    // http://www.materialpalette.com/orange/teal
+
     private void init(){
-        connectionHandler = ChromecastConnectionHandler.getInstance(this);
-        connectionHandler.init();
+        this.connectionHandler = ChromecastConnectionHandler.getInstance(this);
+        this.connectionHandler.init();
     }
 
 
@@ -37,9 +40,6 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
 
 
     // @Implements
-    public Context getApplicationContext() {
-        return this.getApplicationContext();
-    }
     public void onTeardown() { }
     public void onChromecastConnected() {
         Log.d(TAG, "Chromecast connected :)");
@@ -47,11 +47,12 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     public void onChromecastDisconnected() { }
     public void onReceiverApplicationConnected() {
         Log.d(TAG, "Receiver application connected :D");
-
         this.connectionHandler.sendMessage("{\"message\": \"Hello mr receiver!\"}");
     }
     public void onReceiverApplicationDisconnected() { }
 
+    public void onMessageChannelConnected() {
+    }
     public void onMessageReceived(JSONObject json) {
         Toast.makeText(this, "Message received", Toast.LENGTH_SHORT).show();
     }
@@ -65,6 +66,9 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
         this.init();
     }
 
+
+    // Should not be done in onPause/onResume
+    // https://developer.android.com/guide/topics/media/mediarouter.html#attach-mr-callback
     @Override
     protected void onStart() {
         super.onStart();
@@ -76,23 +80,6 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
         this.connectionHandler.stopRoutePolling();
         super.onStop();
     }
-
-    /*@Override
-
-    // Should not be done in onPause/onResume
-    // https://developer.android.com/guide/topics/media/mediarouter.html#attach-mr-callback
-
-    protected void onResume() {
-        super.onResume();
-        mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-    }
-    @Override
-    protected void onPause() {
-        if (isFinishing()) {
-            mediaRouter.removeCallback(mediaRouterCallback);
-        }
-        super.onPause();
-    }*/
 
 
     @Override

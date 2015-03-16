@@ -47,5 +47,6 @@ public class LobbyActivity extends ActionBarActivity implements IChromecastUser 
     public void onChromecastDisconnected() { }
     public void onReceiverApplicationConnected() { }
     public void onReceiverApplicationDisconnected() { }
+    public void onMessageChannelConnected() { }
     public void onMessageReceived(JSONObject json) { }
 }
