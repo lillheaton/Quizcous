@@ -1,7 +1,8 @@
 package com.emilochhektor.quizcous;
 
-import android.content.Context;
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -31,8 +32,8 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
 
 
 
-    private void startLobbyActivity() {
-        Intent intent = new Intent(this, LobbyActivity.class);
+    private void startUserSelectionScreen() {
+        Intent intent = new Intent(this, UserSelectionActivity.class);
         startActivity(intent);
     }
 
@@ -48,6 +49,7 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     public void onReceiverApplicationConnected() {
         Log.d(TAG, "Receiver application connected :D");
         this.connectionHandler.sendMessage("{\"message\": \"Hello mr receiver!\"}");
+        startUserSelectionScreen();
     }
     public void onReceiverApplicationDisconnected() { }
 
@@ -62,6 +64,7 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+//        setContentView(R.layout.screen_user_select);
 
         this.init();
     }

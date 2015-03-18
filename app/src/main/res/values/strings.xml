@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Quizcous</string>
+    <string name="quizcous">Quizcous</string>
     <string name="app_id">B7BD0161</string>
     <string name="app_id_local">21026778</string>
 

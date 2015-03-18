@@ -6,23 +6,34 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.emilochhektor.quizcous.cast.ChromecastConnectionHandler;
 import com.emilochhektor.quizcous.cast.IChromecastUser;
-import com.google.android.gms.cast.CastDevice;
 
 import org.json.JSONObject;
 
 
-public class LobbyActivity extends ActionBarActivity implements IChromecastUser {
+public class UserSelectionActivity extends ActionBarActivity implements IChromecastUser {
+
+    private ChromecastConnectionHandler connectionHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lobby);
+        setContentView(R.layout.screen_user_select);
+
+        this.connectionHandler = ChromecastConnectionHandler.getInstance(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_lobby, menu);
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+
+        this.connectionHandler.setChromecastMenuItem(mediaRouteMenuItem);
+
         return true;
     }
 
