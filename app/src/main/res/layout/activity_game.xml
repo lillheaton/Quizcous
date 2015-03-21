@@ -6,12 +6,27 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.emilochhektor.quizcous.GameActivity">
 
-    <LinearLayout android:id="@+id/activity_game_nameList"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp" />
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker2"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/numberPicker"
+        android:layout_toStartOf="@+id/numberPicker" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker3"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/numberPicker"
+        android:layout_toEndOf="@+id/numberPicker" />
+
 </RelativeLayout>

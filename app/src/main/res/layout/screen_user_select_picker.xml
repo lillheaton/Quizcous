@@ -8,19 +8,6 @@
     android:background="@color/app_primary"
     android:id="@+id/screen_user_select_background">
 
-    <EditText
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/screen_user_select_edittext_name"
-        android:text="AAA"
-        android:textSize="50dp"
-        android:textIsSelectable="false"
-        style="@style/Widget.AppCompat.EditText"
-        android:gravity="center"
-        android:maxLength="3"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,5 +44,28 @@
         android:id="@+id/screen_user_select_checkbox_ready"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/screen_user_select_picker_2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/screen_user_select_picker_1"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/screen_user_select_picker_2"
+        android:layout_toStartOf="@+id/screen_user_select_picker_2" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/screen_user_select_picker_3"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/screen_user_select_picker_2"
+        android:layout_toEndOf="@+id/screen_user_select_picker_2" />
 
 </RelativeLayout>

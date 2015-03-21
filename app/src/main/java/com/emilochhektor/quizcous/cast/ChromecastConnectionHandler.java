@@ -18,6 +18,7 @@ import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -31,8 +32,8 @@ public class ChromecastConnectionHandler {
     private static ChromecastConnectionHandler _instance;
     private static Context _context;
 
-    private int appIdResource = R.string.app_id;
-//    private int appIdResource = R.string.app_id_local;
+//    private int appIdResource = R.string.app_id;
+    private int appIdResource = R.string.app_id_local;
     private String appID;
     private IChromecastUser chromecastUser;
 
@@ -87,6 +88,18 @@ public class ChromecastConnectionHandler {
     }
 
     // ## Communication
+    public void sendMessage(String messageType, JSONObject jsonMessage) {
+        try {
+            JSONObject jsonWrapper = new JSONObject();
+            jsonWrapper.put("type", messageType);
+            jsonWrapper.put("data", jsonMessage);
+
+            this.sendMessage(jsonWrapper);
+        } catch (JSONException ex) { }
+    }
+    public void sendMessage(JSONObject json) {
+        this.sendMessage(json.toString());
+    }
     public void sendMessage(String message) {
         if (this.apiClient == null || this.messageChannel == null) {
             return;

@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.emilochhektor.quizcous.cast.ChromecastConnectionHandler;
@@ -60,11 +61,12 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     }
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
-//        setContentView(R.layout.screen_user_select);
 
         this.init();
     }

@@ -46,11 +46,11 @@ public class GameActivity extends ActionBarActivity {
 
     private void fakeFriends(){
         String[] names = new String[]{ "Hektor", "Emil", "Kalle", "Sven", "Nisse" };
-        LinearLayout linearLayout = (LinearLayout)this.findViewById(R.id.activity_game_nameList);
+//        LinearLayout linearLayout = (LinearLayout)this.findViewById(R.id.activity_game_nameList);
 
-        for (String name : names){
-            addFriendInList(linearLayout, name);
-        }
+//        for (String name : names){
+//            addFriendInList(linearLayout, name);
+//        }
     }
 
     private void addFriendInList(ViewGroup parent, String name){
