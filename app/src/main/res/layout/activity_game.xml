@@ -4,29 +4,36 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.emilochhektor.quizcous.GameActivity">
+    tools:context="com.emilochhektor.quizcous.GameActivity"
+    android:background="@color/app_primary">
 
-    <NumberPicker
+
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/numberPicker"
+        android:id="@+id/answerInput"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@color/app_primary_light"
+        android:minWidth="250dp"
+        android:nestedScrollingEnabled="true"
+        android:minHeight="40dp" />
 
-    <NumberPicker
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/numberPicker2"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/numberPicker"
-        android:layout_toStartOf="@+id/numberPicker" />
+        android:text="Send"
+        android:id="@+id/sendButton"
+        android:layout_below="@+id/answerInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
 
-    <NumberPicker
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/numberPicker3"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/numberPicker"
-        android:layout_toEndOf="@+id/numberPicker" />
-
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/answerTextView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="63dp" />
 </RelativeLayout>

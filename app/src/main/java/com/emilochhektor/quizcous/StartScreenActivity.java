@@ -27,6 +27,9 @@ public class StartScreenActivity extends ActionBarActivity implements IChromecas
     // http://www.materialpalette.com/orange/teal
 
     private void init(){
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+
         this.connectionHandler = ChromecastConnectionHandler.getInstance(this);
         this.connectionHandler.init();
     }
